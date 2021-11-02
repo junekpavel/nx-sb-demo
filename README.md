@@ -1,94 +1,111 @@
+# Nx Storybook issue demonstration for buildable libs
+
+This is minimal reproduction of issue when storybook doesn't run for buildable libraries.
+
+## Current Behavior 
+The storybook won't run for buildable libraries
+
+## Expected Behavior
+The storybook shoud run.
+
+## Steps to reproduce
+The repo was generated via following commands (see the commits history):
+```shell
+npx create-nx-workspace --package-manager=yarn --name=nx-sb-demo --preset=oss --nx-cloud=false
+
+yarn add -D @nrwl/angular @nrwl/storybook
+
+yarn update
+yarn update --run-migrations
+
+yarn nx g @nrwl/angular:lib first-lib --buildable
+
+yarn nx g @nrwl/angular:lib second-lib --buildable
+
+yarn nx g @nrwl/angular:component demo --project=second-lib
+
+yarn nx g @nrwl/storybook:configuration --name=second-lib --configure-cypress=false --ui-framework=@storybook/angular
+
+yarn nx g @nrwl/angular:stories --name=second-lib --cypress-project=false --generate-cypress-specs=false
+
+```
+
+Now, the following command fail:
+```shell
+yarn nx run second-lib:storybook
+```
+
+### Failure Logs
+```lo
+yarn run v1.22.0
+$ nx run second-lib:storybook
+
+> nx run second-lib:storybook 
+info => Loading presets
+info => Loading 1 config file in "/xxx/nx-sb-demo/packages/second-lib/.storybook"
+info => Loading 8 other files in "/xxx/nx-sb-demo/packages/second-lib/.storybook"
+info => Adding stories defined in "/xxx/nx-sb-demo/packages/second-lib/.storybook/main.js"
+(node:35656) [DEP0148] DeprecationWarning: Use of deprecated folder mapping "./" in the "exports" field module resolution of the package at /xxx/nx-sb-demo/node_modules/tslib/package.json.
+Update this package.json to use a subpath pattern like "./*".
+(Use `node --trace-deprecation ...` to show where the warning was created)
+info => Found custom tsconfig.json
+info => Using implicit CSS loaders
+info => Loading angular-cli config
+info => Using angular project "first-lib:build" for configuring Storybook
+ERR! => Could not get angular cli webpack config
+TypeError [ERR_INVALID_ARG_TYPE]: The "path" argument must be of type string. Received undefined
 
 
-# NxSbDemo
+          Broken build, fix the error above.
+          You may need to refresh the browser.
+        
 
-This project was generated using [Nx](https://nx.dev).
+———————————————————————————————————————————————
 
-<p style="text-align: center;"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="450"></p>
+>  NX   ERROR  Running target "second-lib:storybook" failed
 
-🔎 **Powerful, Extensible Dev Tools**
+  Failed tasks:
+  
+  - second-lib:storybook
+  
+  Hint: run the command with --verbose for more details.
 
-## Adding capabilities to your workspace
+error Command failed with exit code 1.
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
 
-Nx supports many plugins which add capabilities for developing different types of applications and different tools.
+```
 
-These capabilities include generating applications, libraries, etc as well as the devtools to test, and build projects as well.
+### Environment
+```
+yarn run v1.22.0
+$ nx report
 
-Below are our core plugins:
+>  NX  Report complete - copy this into the issue template
 
-- [React](https://reactjs.org)
-  - `npm install --save-dev @nrwl/react`
-- Web (no framework frontends)
-  - `npm install --save-dev @nrwl/web`
-- [Angular](https://angular.io)
-  - `npm install --save-dev @nrwl/angular`
-- [Nest](https://nestjs.com)
-  - `npm install --save-dev @nrwl/nest`
-- [Express](https://expressjs.com)
-  - `npm install --save-dev @nrwl/express`
-- [Node](https://nodejs.org)
-  - `npm install --save-dev @nrwl/node`
+  Node : 16.10.0
+  OS   : darwin x64
+  yarn : 1.22.0
+  
+  nx : 13.1.2
+  @nrwl/angular : 13.1.2
+  @nrwl/cli : 13.1.2
+  @nrwl/cypress : 13.1.2
+  @nrwl/devkit : 13.1.2
+  @nrwl/eslint-plugin-nx : 13.1.2
+  @nrwl/express : Not Found
+  @nrwl/jest : 13.1.2
+  @nrwl/linter : 13.1.2
+  @nrwl/nest : Not Found
+  @nrwl/next : Not Found
+  @nrwl/node : Not Found
+  @nrwl/nx-cloud : Not Found
+  @nrwl/react : Not Found
+  @nrwl/schematics : Not Found
+  @nrwl/tao : 13.1.2
+  @nrwl/web : Not Found
+  @nrwl/workspace : 13.1.2
+  @nrwl/storybook : 13.1.2
+  @nrwl/gatsby : Not Found
+  typescript : 4.3.5
 
-There are also many [community plugins](https://nx.dev/nx-community) you could add.
-
-## Generate an application
-
-Run `nx g @nrwl/react:app my-app` to generate an application.
-
-> You can use any of the plugins above to generate applications as well.
-
-When using Nx, you can create multiple applications and libraries in the same workspace.
-
-## Generate a library
-
-Run `nx g @nrwl/react:lib my-lib` to generate a library.
-
-> You can also use any of the plugins above to generate libraries as well.
-
-Libraries are shareable across libraries and applications. They can be imported from `@nx-sb-demo/mylib`.
-
-## Development server
-
-Run `nx serve my-app` for a dev server. Navigate to http://localhost:4200/. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `nx g @nrwl/react:component my-component --project=my-app` to generate a new component.
-
-## Build
-
-Run `nx build my-app` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `nx test my-app` to execute the unit tests via [Jest](https://jestjs.io).
-
-Run `nx affected:test` to execute the unit tests affected by a change.
-
-## Running end-to-end tests
-
-Run `ng e2e my-app` to execute the end-to-end tests via [Cypress](https://www.cypress.io).
-
-Run `nx affected:e2e` to execute the end-to-end tests affected by a change.
-
-## Understand your workspace
-
-Run `nx dep-graph` to see a diagram of the dependencies of your projects.
-
-## Further help
-
-Visit the [Nx Documentation](https://nx.dev) to learn more.
-
-
-
-## ☁ Nx Cloud
-
-### Computation Memoization in the Cloud
-
-<p style="text-align: center;"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-cloud-card.png"></p>
-
-Nx Cloud pairs with Nx in order to enable you to build and test code more rapidly, by up to 10 times. Even teams that are new to Nx can connect to Nx Cloud and start saving time instantly.
-
-Teams using Nx gain the advantage of building full-stack applications with their preferred framework alongside Nx’s advanced code generation and project dependency graph, plus a unified experience for both frontend and backend developers.
-
-Visit [Nx Cloud](https://nx.app/) to learn more.
+```
