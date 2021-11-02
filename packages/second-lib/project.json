@@ -1,0 +1,42 @@
+{
+  "projectType": "library",
+  "root": "packages/second-lib",
+  "sourceRoot": "packages/second-lib/src",
+  "prefix": "nx-sb-demo",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/angular:ng-packagr-lite",
+      "outputs": ["dist/packages/second-lib"],
+      "options": {
+        "project": "packages/second-lib/ng-package.json"
+      },
+      "configurations": {
+        "production": {
+          "tsConfig": "packages/second-lib/tsconfig.lib.prod.json"
+        },
+        "development": {
+          "tsConfig": "packages/second-lib/tsconfig.lib.json"
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/second-lib"],
+      "options": {
+        "jestConfig": "packages/second-lib/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "packages/second-lib/src/**/*.ts",
+          "packages/second-lib/src/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

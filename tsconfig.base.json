@@ -15,7 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@nx-sb-demo/first-lib": ["packages/first-lib/src/index.ts"]
+      "@nx-sb-demo/first-lib": ["packages/first-lib/src/index.ts"],
+      "@nx-sb-demo/second-lib": ["packages/second-lib/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

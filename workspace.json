@@ -1,6 +1,7 @@
 {
   "version": 2,
   "projects": {
-    "first-lib": "packages/first-lib"
+    "first-lib": "packages/first-lib",
+    "second-lib": "packages/second-lib"
   }
 }
